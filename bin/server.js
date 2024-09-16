@@ -20,7 +20,7 @@ const opentelemetry = require('@opentelemetry/api');
 //  serviceName: 'cpg-pacman-service',
 //});
 
-const tracer = opentelemetry.trace.getTracer('cpg-pacman-service', '0.1.0');
+const tracer = opentelemetry.trace.getTracer('pacman', '0.1.0');
 
 function randomNumber() {
   return tracer.startActiveSpan('make-random', (span) => {

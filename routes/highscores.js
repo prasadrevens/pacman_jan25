@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var Database = require('../lib/database');
+const opentelemetry = require('@opentelemetry/api');
+const tracer = opentelemetry.trace.getTracer('pacman', '0.1.0');
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -14,6 +16,10 @@ router.use(function timeLog (req, res, next) {
 
 router.get('/list', urlencodedParser, function(req, res, next) {
     console.log('[GET /highscores/list]');
+    tracer.startActiveSpan('view-highscores', (span) = {
+      span.setAttribute('customAttr', 'valueforcustomattr');
+      span.end();
+    });
     Database.getDb(req.app, function(err, db) {
         if (err) {
             return next(err);
