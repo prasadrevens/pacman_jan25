@@ -8,6 +8,31 @@ var app = require('../app');
 //var debug = require('debug')('pacman:server');
 var http = require('http');
 
+
+/**
+ * OTEL Setup
+ */
+
+const { start } = require('@splunk/otel');
+const opentelemetry = require('@opentelemetry/api');
+
+start({
+  serviceName: 'cpg-pacman-service',
+});
+
+const tracer = opentelemetry.trace.getTracer('cpg-pacman-service', '0.1.0');
+
+function randomNumber() {
+  return tracer.startActiveSpan('make-random', (span) => {
+    const result = Math.random() * 42;
+    span.setAttribute('random-result', result);
+    span.end();
+    return result;
+  });
+}
+
+
+
 /**
  * Get port from environment and store in Express.
  */
