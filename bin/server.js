@@ -13,7 +13,7 @@ var http = require('http');
  * OTEL Setup
  */
 
-const { start } = require('@splunk/otel');
+//const { start } = require('@splunk/otel');
 const opentelemetry = require('@opentelemetry/api');
 
 start({
