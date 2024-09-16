@@ -16,31 +16,31 @@ router.use(function timeLog (req, res, next) {
 
 router.get('/list', urlencodedParser, function(req, res, next) {
     console.log('[GET /highscores/list]');
-    tracer.startActiveSpan('view-highscores', (span) = {
-      span.setAttribute('customAttr', 'valueforcustomattr');
+    return tracer.startActiveSpan('rollTheDice', (span: Span) => {
+      Database.getDb(req.app, function(err, db) {
+          if (err) {
+              return next(err);
+          }
+
+          // Retrieve the top 10 high scores
+          var col = db.collection('highscore');
+          col.find({}).sort([['score', -1]]).limit(10).toArray(function(err, docs) {
+              var result = [];
+              if (err) {
+                  console.log(err);
+              }
+
+              docs.forEach(function(item, index, array) {
+                  result.push({ name: item['name'], cloud: item['cloud'],
+                                zone: item['zone'], host: item['host'],
+                                score: item['score'] });
+              });
+
+              res.json(result);
+          });
+      });
+      // Be sure to end the span!
       span.end();
-    });
-    Database.getDb(req.app, function(err, db) {
-        if (err) {
-            return next(err);
-        }
-
-        // Retrieve the top 10 high scores
-        var col = db.collection('highscore');
-        col.find({}).sort([['score', -1]]).limit(10).toArray(function(err, docs) {
-            var result = [];
-            if (err) {
-                console.log(err);
-            }
-
-            docs.forEach(function(item, index, array) {
-                result.push({ name: item['name'], cloud: item['cloud'],
-                              zone: item['zone'], host: item['host'],
-                              score: item['score'] });
-            });
-
-            res.json(result);
-        });
     });
 });
 
