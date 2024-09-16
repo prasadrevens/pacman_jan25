@@ -16,9 +16,9 @@ var http = require('http');
 //const { start } = require('@splunk/otel');
 const opentelemetry = require('@opentelemetry/api');
 
-start({
-  serviceName: 'cpg-pacman-service',
-});
+//start({
+//  serviceName: 'cpg-pacman-service',
+//});
 
 const tracer = opentelemetry.trace.getTracer('cpg-pacman-service', '0.1.0');
 
