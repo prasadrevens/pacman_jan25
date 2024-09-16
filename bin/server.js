@@ -22,16 +22,9 @@ const opentelemetry = require('@opentelemetry/api');
 
 const tracer = opentelemetry.trace.getTracer('pacman', '0.1.0');
 
-function randomNumber() {
-  return tracer.startActiveSpan('make-random', (span) => {
-    const result = Math.random() * 42;
-    span.setAttribute('random-result', result);
-    span.end();
-    return result;
-  });
-}
-
-
+const span = tracer.startSpan('customSpan');
+span.setAttribute('customKey', 'customValue');
+span.end();
 
 /**
  * Get port from environment and store in Express.

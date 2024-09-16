@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var Database = require('../lib/database');
-const opentelemetry = require('@opentelemetry/api');
-const tracer = opentelemetry.trace.getTracer('pacman', '0.1.0');
 
 // create application/x-www-form-urlencoded parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -16,31 +14,27 @@ router.use(function timeLog (req, res, next) {
 
 router.get('/list', urlencodedParser, function(req, res, next) {
     console.log('[GET /highscores/list]');
-    return tracer.startActiveSpan('rollTheDice', (span: Span) => {
-      Database.getDb(req.app, function(err, db) {
-          if (err) {
-              return next(err);
-          }
+    Database.getDb(req.app, function(err, db) {
+        if (err) {
+            return next(err);
+        }
 
-          // Retrieve the top 10 high scores
-          var col = db.collection('highscore');
-          col.find({}).sort([['score', -1]]).limit(10).toArray(function(err, docs) {
-              var result = [];
-              if (err) {
-                  console.log(err);
-              }
+        // Retrieve the top 10 high scores
+        var col = db.collection('highscore');
+        col.find({}).sort([['score', -1]]).limit(10).toArray(function(err, docs) {
+            var result = [];
+            if (err) {
+                console.log(err);
+            }
 
-              docs.forEach(function(item, index, array) {
-                  result.push({ name: item['name'], cloud: item['cloud'],
-                                zone: item['zone'], host: item['host'],
-                                score: item['score'] });
-              });
+            docs.forEach(function(item, index, array) {
+                result.push({ name: item['name'], cloud: item['cloud'],
+                              zone: item['zone'], host: item['host'],
+                              score: item['score'] });
+            });
 
-              res.json(result);
-          });
-      });
-      // Be sure to end the span!
-      span.end();
+            res.json(result);
+        });
     });
 });
 
