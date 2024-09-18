@@ -1,13 +1,5 @@
 'use strict';
 
-import SplunkRum from '@splunk/otel-web';
-
-// Spans generated prior to this call don't have user metadata
-SplunkRum.setGlobalAttributes({
-   'enduser.id': "placeholderUser",
-   'enduser.role': "userRole",
-});
-
 var express = require('express');
 var path = require('path');
 var Database = require('./lib/database');
