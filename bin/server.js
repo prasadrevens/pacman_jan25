@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-import './splunk-instrumentation.js';
 
 var app = require('../app');
 //var debug = require('debug')('pacman:server');
