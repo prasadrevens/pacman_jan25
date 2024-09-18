@@ -11,7 +11,6 @@ RUN git clone https://github.com/ConnorRules/pacman .
 
 # Install app dependencies
 RUN npm install
-RUN npm install @splunk/otel-web --save
 
 # Expose port 8080
 EXPOSE 8080
