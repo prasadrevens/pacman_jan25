@@ -17,7 +17,7 @@ var http = require('http');
 const opentelemetry = require('@opentelemetry/api');
 
 //start({
-//  serviceName: 'cpg-pacman-service',
+//  serviceName: 'pacman',
 //});
 
 const tracer = opentelemetry.trace.getTracer('pacman', '0.1.0');
