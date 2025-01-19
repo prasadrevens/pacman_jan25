@@ -1,6 +1,6 @@
 FROM node:latest
 
-MAINTAINER Ivan Font <ifont@redhat.com>
+LABEL maintainer=pbhat
 
 # Create app directory
 RUN mkdir -p /usr/src/app
